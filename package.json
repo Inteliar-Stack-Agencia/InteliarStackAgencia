@@ -1,0 +1,17 @@
+{
+  "name": "inteliar-stack",
+  "private": true,
+  "workspaces": [
+    "app/*",
+    "lib/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@inteliar/architect",
+    "build": "npm run build --workspace=@inteliar/architect",
+    "lint": "npm run lint --workspace=@inteliar/architect",
+    "typecheck": "npm run typecheck --workspace=@inteliar/architect"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
+  }
+}
