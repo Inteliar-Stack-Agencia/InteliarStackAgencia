@@ -41,16 +41,18 @@ capabilities_sugeridas: [Customers, Repairs, Inventory, Notifications]
 
 **Por qué no se construye ya:** no sabemos todavía si el reporte actual es "demasiado largo" para un dueño real o si el largo es justamente lo que lo hace sentir tomado en serio. Eso se mide preguntando, no adivinando.
 
-## Fase 3 — Loop de validación explícito (después de validar)
+## Fase 3 — Loop de validación explícito ✅ implementado (2026-07-13)
 
-En vez de terminar la conversación con un simple final, terminar con: *"Este es el modelo que entendí de tu empresa. Decime qué está mal."* — y capturar esa corrección como dato.
+En vez de terminar la conversación con un simple final, Architect ahora resume lo que entendió y pregunta explícitamente "¿es correcto? ¿falta algo?" antes de generar el BOM — solo avanza después de una confirmación real del usuario, con vueltas de corrección si hace falta.
 
-**Nota:** esto es, en el fondo, la versión productizada de lo que hoy hacemos manualmente al preguntarle al dueño "¿esto describe bien tu negocio?" después de generado el reporte. Antes de programarlo, hay que confirmar con varias entrevistas reales que el dueño efectivamente da correcciones útiles cuando se le pregunta así — si la respuesta típica es un genérico "sí, está bien", esta feature no aporta nada.
+**Por qué se pudo hacer sin esperar validación:** resultó ser un cambio de prompt puro, no una feature nueva. El mecanismo de "conversación completa" (`DISCOVER_COMPLETE_MARKER`) ya existía — solo se cambió *cuándo* el modelo lo emite (después de una confirmación explícita del usuario, no cuando el modelo decide unilateralmente que ya tiene suficiente). Cero código nuevo, cero riesgo de sobre-construcción. Ver `src/lib/discover-prompt.ts`.
+
+De paso se refinaron las 8 preguntas originales a una versión más concreta y natural ("Discover Framework v1": identidad, cómo entra el trabajo, el proceso completo sin interrumpir, herramientas, dolor, excepciones, objetivos a 1 año) y se cambió la persona de "asistente genérico" a "consultor de procesos con 20 años de experiencia". Todavía no se backporteó a `inteliar-spec/capitulos/18-Discover-Engine.md` — eso espera evidencia real de que esta versión funciona mejor, no se asume.
 
 ## Ya existe, sin código nuevo
 
 - **"Tengo otra empresa":** ya es el botón "← Empezar de nuevo" en `ReportView.tsx`. No hace falta construir nada para esto.
-- **Panel interno de entrevistas:** ya es `business-research/` (repo AGENTIC-IA). Una carpeta con un `.md` por entrevista, usando `INTERVIEW_TEMPLATE.md`, es una base de datos suficiente para 20-30 entrevistas. Se justifica un panel de verdad (con estados 🟢🟡🔴, búsqueda, etc.) recién cuando navegar esa carpeta a mano se vuelva insoportable — no antes.
+- **Panel interno de entrevistas:** ya es `business-research/` (repo AGENTIC-IA), ahora organizado en 5 categorías (talleres, gastronomía, retail, salud, servicios) con un objetivo explícito de 100 entrevistas (20 por categoría). Una carpeta con un `.md` por entrevista, usando `INTERVIEW_TEMPLATE.md`, es una base de datos suficiente para eso. Se justifica un panel de verdad (con estados 🟢🟡🔴, búsqueda, etc.) recién cuando navegar esa carpeta a mano se vuelva insoportable — no antes.
 
 ## Meta-IA (mucho después)
 
